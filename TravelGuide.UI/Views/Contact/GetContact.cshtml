@@ -1,0 +1,102 @@
+﻿@model TravelGuide.Entities.Entity.Contact
+@{
+    ViewBag.Title = "İletişim Sayfasını Yönet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>@ViewBag.Title</h2>
+            <hr />
+        </div>
+
+        @using (Html.BeginForm("GetContact", "Contact", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <div class="col-md-12">
+                    @Html.ValidationSummary(false)
+                </div>
+                @Html.HiddenFor(model => model.Id)
+
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        <textarea class="form-control" name="Address" rows="10" cols="5">@Model.Address</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Telegram, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Telegram, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Instagram, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Instagram, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Github, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Github, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Twitter, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Twitter, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @MyBootstrapHelper.Button("success", "Kaydet", string.Empty, "submit", "check", "Kaydet")
+                        @MyBootstrapHelper.LinkButton("/Contact/Index/", "default", null, "Sayfaya Dön", "angle-double-left", "Sayfaya Dön")
+                    </div>
+                </div>
+
+            </div>
+
+            </div>
+        }
+
+    </div>
+</div>
+<script src="~/Scripts/admin.js"></script>
+

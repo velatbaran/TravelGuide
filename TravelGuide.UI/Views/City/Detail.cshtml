@@ -1,0 +1,156 @@
+﻿@using TravelGuide.Entities.Entity
+@using TravelGuide.UI.Models
+@model City
+@{
+    ViewBag.Title = "Şehir Detayı";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Header -->
+<header class="intro-header" style="background-image: url('../../images/medias/@Model.Image')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>@Model.Name.ToUpper()</h1>
+                    <h2 class="subheading">@Model.Slogan</h2>
+                    @if (Model.ModifiedOn != null)
+                    {
+                        <span class="meta">
+                            <a href="/Home/GetCitiesByUsername/@Model.Id">@Model.CreatedUsername</a> tarafından @(((DateTime)Model.ModifiedOn).ToString("dd-MMM-yyyy hh:mm")) tarihinde güncellendi.
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="meta">
+                            <a href="/Home/GetCitiesByUsername/@Model.Id">@Model.CreatedUsername</a> tarafından @(((DateTime
+                            )Model.CreatedOn).ToString("dd-MMM-yyyy hh:mm")) tarihinde eklendi.
+                        </span>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 class="section-heading">Tarihi</h2>
+                <hr />
+                <p>
+                    @Html.Raw(Model.DateInformation)
+                </p>
+
+                <h2 class="section-heading">Gezilecek Yerler</h2>
+                <hr />
+                <p>
+                    @Html.Raw(Model.WanderPlaces)
+                </p>
+                <a href="#">
+                    <img class="img-responsive" src="~/images/medias/@Model.Image" alt="GeziFoni - @Model.Name">
+                </a>
+                <span class="caption text-muted">@Model.Slogan</span>
+
+                <h2 class="section-heading">Mekanlar</h2>
+                <hr />
+                <div class="row">
+                    @foreach (Place place in Model.Places)
+                    {
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="thumbnail">
+                                <img src="~/images/medias/@place.Image">
+                                <div class="caption">
+                                    <h3>@place.Name</h3>
+                                    <p>
+                                        <span class="fa fa-address-card"></span> @place.Address<br />
+                                        <span class="fa fa-phone"></span> @place.Phone
+                                    </p>
+                                    <p>
+                                        <a href="/City/Places/@place.Id" data-toggle="modal" data-target="@("#placeModal"+place.Id)" class="btn btn-info btn-sm">Detay</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="@("placeModal"+place.Id)" tabindex="-1" role="dialog" aria-labelledby="myModal-label">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModal-label">@place.Name</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <img class="img-rounded img-responsive" src="~/images/medias/@place.Image">
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <h4>Açıklama</h4>
+                                        <p>@place.Description</p>
+                                        <hr />
+                                        <h4>Yol Tarifi</h4>
+                                        <p>@place.RoadDescribe</p>
+                                        <hr />
+                                        <h4>Yol Detaylı Tarif</h4>
+                                        <p>
+                                            <ul>
+                                                @foreach (var item in place.RoadDescribeUnits)
+                                                {
+                                                    <li>
+                                                        <i>@item.Detail</i><br />
+                                                        <span class="fa fa-map-marker"></span> <small>@item.Place.Latitude - @item.Place.Longitude</small>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>}
+                </div>
+                <h2 class="section-heading">Yemekler</h2>
+                <hr />
+                <p>
+                    @Html.Raw(Model.Foods)
+                </p>
+                <h2 class="section-heading">Diğer Bilgiler</h2>
+                <hr />
+                <p>
+                    @Html.Raw(Model.OtherInformations)
+                </p>
+
+                <h2 class="section-heading" id="comments">Yorumlar</h2>
+                <hr />
+                <ul class="media-list">
+                    @foreach (Comment comment in Model.Comments)
+                    {
+                        <li class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object img-circle" width="64" height="64" src="~/images/medias/@comment.Owner.ProfileImage">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">@comment.Owner.Username</h4>
+                                @comment.CommentText
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <br />
+                @if (CurrentSession.User != null)
+                {
+                    @Html.Partial("PartialCommentWrite", Model.Id)
+                }
+
+            </div>
+        </div>
+    </div>
+</article>
+

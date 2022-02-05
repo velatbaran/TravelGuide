@@ -1,0 +1,118 @@
+﻿@using GridMvc.Html;
+@using TravelGuide.Entities.Entity;
+@model List<City>
+@{
+    ViewBag.Title = "Şehirleri Yönet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h2>@ViewBag.Title</h2>
+                <hr />
+            </div>
+            <div class="col-md-10 col-md-offset-1" style="margin-bottom:20px">
+                <a href="/City/Create" class="btn btn-primary" title="Yeni Şehir Ekle"><i class="fa fa-plus mr-2"></i> Yeni Şehir Ekle</a>
+            </div><i class=" fa fa-"></i>
+            <div class="col-md-10 col-md-offset-1">
+                @(Html.Grid(Model).Columns(col =>
+            {
+                col.Add(x => x.Id, true);
+                col.Add(x => x.Country.Name).Titled("Ülke");
+                col.Add(x => x.Name).Titled("Şehir");
+                col.Add(x => x.Slogan).Titled("Slogan");
+                col.Add(x=>x.CreatedOn).Titled("Kayıt Tarihi").Format("{0:d}");
+                col.Add(x => x.CreatedUsername).Titled("Kaydeden");
+                col.Add(x => x.ModifiedOn).Titled("Güncelleme Tarihi").Format("{0:d}");
+                col.Add(x => x.ModifiedUsername).Titled("Güncelleyen");
+
+                col.Add().Encoded(false).Sanitized(false).RenderValueAs(k =>
+                {
+                    string htmlEditButton = "<a class='btn btn-warning', title='Güncelle', href='/City/Edit/" + k.Id + "'><i class='fa fa-edit mr-2'></i></a>";
+                    return MvcHtmlString.Create(htmlEditButton);
+                });
+                col.Add().Encoded(false).Sanitized(false).RenderValueAs(k =>
+                {
+                    string htmlEditButton = "<a class='btn btn-danger', title='Sil', data-toggle = 'modal', data-target = '#deleteCityModal', data-city-id = '" + k.Id + "'><i class='fa fa-trash mr-2'></i></a>";
+                    return MvcHtmlString.Create(htmlEditButton);
+                });
+                col.Add().Encoded(false).Sanitized(false).RenderValueAs(k =>
+                {
+                    string htmlEditButton = "<a class='btn btn-default', title='Detay', href='/City/Detail/" + k.Id + "'><i class='fa fa-eye mr-2'></i></a>";
+                    return MvcHtmlString.Create(htmlEditButton);
+                });
+                col.Add().Encoded(false).Sanitized(false).RenderValueAs(k =>
+                {
+                    string htmlEditButton = "<a class='btn btn-info', title='Mekanlar', href='/Place/Index/" + k.Id + "'><i class='fa fa-compass mr-2'></i></a>";
+                    return MvcHtmlString.Create(htmlEditButton);
+                });
+            })
+            .Filterable(true)
+            .WithMultipleFilters()
+            .Sortable(true)
+            .WithPaging(10)
+            .SetLanguage("tr")
+            .EmptyText("Kayıtlı bir daire tipi bulunmamaktadır.")
+           )
+            </div>
+        </div>
+    </div>
+</article>
+<script src="~/Scripts/admin.js"></script>
+<!-- Modal delete Country-->
+<div class="modal fade" id="deleteCityModal" tabindex="-1" aria-labelledby="deleteCityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="deleteCityModalLabel">Silme Sayfası</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <form id="deleteCityForm" action="/City/Delete" method="post">
+                            <input type="hidden" id="deleteCityId" name="Id" />
+                        </form>
+
+                        <div class="alert alert-danger">
+                            <span class="fa fa-remove"></span> Şehir kaydını silmek istediğinize emin misiniz?
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" title="İptal"><i class="fa fa-close mr-2"></i>İptal</button>
+                <button type="submit" id="btnDeleteCity" class="btn btn-danger" title="Sil" onclick="btnDeleteCity_Click()"><i class="fa fa-trash mr-2">&nbsp;</i>Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#deleteCityModal').on('show.bs.modal', function (e) {
+
+            var btn = $(e.relatedTarget)
+            var id = btn.data("city-id");
+            $("#deleteCityModal").find("#deleteCityId").val(id);
+        });
+    });
+    function btnDeleteCity_Click() {
+        $("#deleteCityForm").submit()
+    }
+</script>

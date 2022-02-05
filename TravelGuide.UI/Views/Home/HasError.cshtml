@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Hata Sayfası";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="row alert-danger" style="margin-top:15px">
+            <div class="col-md-8 col-md-offset-2">
+
+                @{
+                    Exception ex = null;
+
+                    if (TempData["LastError"] != null)
+                    {
+                        ex = TempData["LastError"] as Exception;
+                    }
+                }
+                <h1><span class="glyphicon glyphicon-remove-circle"></span>Hata Oluştu!</h1>
+                <p>
+                    Hata Oluştu. Lütfen site yöneticisiyle iletişime geçiniz.
+                    <br /><br />
+
+                    @if (ex != null)
+                    {
+                        <strong>Hata Detayı : </strong>
+                        @ex.Message
+                        <br /><br /><br />
+                    }
+
+                    @MyBootstrapHelper.LinkButton("/Home/Index", "default", string.Empty, "Ana Sayfaya Git", "home", "Ana Sayfaya Git!")
+                    @MyBootstrapHelper.LinkButton("mailto:baranvelat021@gmail.com", "primary", string.Empty, "E-Posta Gönder", "envelope", "E-Posta Gönder")
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/admin.js"></script>
+

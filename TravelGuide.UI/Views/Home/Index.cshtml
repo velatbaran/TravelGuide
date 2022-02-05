@@ -1,0 +1,49 @@
+﻿@using TravelGuide.Entities.Entity
+@model List<City>
+@{
+    ViewBag.Title = "Anasayfa";
+}
+
+<header class="intro-header" style="background-image: url('../../images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+                    <h1>Seyahat Rehberi</h1>
+                    <hr class="small">
+                    <span class="subheading">Yeni Şehir Rehberiniz</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+
+        @Html.Action("GetAllCountry","Home")
+
+        <div class="col-lg-6 col-lg-offset-1 col-md-6 col-md-offset-1">
+            @foreach (City item in Model)
+            {
+                <div class="post-preview">
+                    <a href="/City/Detail/@item.Id">
+                        <h2 class="post-title">
+                            @item.Name
+                        </h2>
+                        <h3 class="post-subtitle">
+                            @item.Slogan
+                        </h3>
+                    </a>
+                    <p class="post-meta"><a href="/Home/GetCitiesByUsername/@item.Id">@item.CreatedUsername</a> tarafından @(((DateTime)item.CreatedOn).ToString("dd-MMM-yyyy hh:mm"))&nbsp;tarihinde eklendi</p>
+                </div>
+                <hr>
+            }
+        </div>
+    </div>
+</div>
+
+@section footer{
+    @Html.Partial("_PartialFooter")
+}
+

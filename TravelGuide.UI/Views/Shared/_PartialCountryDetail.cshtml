@@ -1,0 +1,36 @@
+﻿@model TravelGuide.Entities.Entity.Country
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <strong for="name" class="control-label col-md-6">Ülke Adı</strong>
+            <div class="col-md-6">
+                <input type="text" class="form-control" value="@Model.Name" readonly>
+            </div>
+        </div><br />
+        <div class="form-group">
+            <strong for="name" class="control-label col-md-6">Kayıt Tarihi</strong>
+            <div class="col-md-6">
+                <input type="datetime" class="form-control" value="@Model.CreatedOn" readonly>
+            </div>
+        </div><br />
+        <div class="form-group">
+            <strong for="name" class="control-label col-md-6">Kaydeden</strong>
+            <div class="col-md-6">
+                <input type="text" class="form-control" value="@Model.CreatedUsername" readonly>
+            </div>
+        </div><br />
+        <div class="form-group">
+            <strong for="name" class="control-label col-md-6">Güncelleme Tarihi</strong>
+            <div class="col-md-6">
+                <input type="datetime" class="form-control" value="@Model.ModifiedOn" readonly>
+            </div>
+        </div><br />
+        <div class="form-group">
+            <strong for="name" class="control-label col-md-6">Güncelleyen</strong>
+            <div class="col-md-6">
+                <input type="text" class="form-control" value="@Model.ModifiedUsername" readonly>
+            </div>
+        </div>
+    </div>
+</div>

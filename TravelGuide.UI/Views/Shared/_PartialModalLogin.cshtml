@@ -1,0 +1,94 @@
+﻿@using TravelGuide.UI.Models
+<link href="~/Content/modal-login.css" rel="stylesheet" />
+
+@if (CurrentSession.User == null)
+{
+    <!-- BEGIN # MODAL LOGIN -->
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <img id="img_logo" src="/images/preferences-system-login.png">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-remove" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+
+                    <!-- Begin # Login Form -->
+                    <form id="login-form" action="/Login/SignIn" method="post">
+                        <div class="modal-body">
+                            <div id="div-login-msg">
+                                <div id="icon-login-msg" class="fa fa-chevron-right"></div>
+                                <span id="text-login-msg">Lütfen giriş yapınız.</span>
+                            </div>
+                            <input id="login_username" name="login_username" class="form-control" type="text" placeholder="kullanıcı adı" required>
+                            <input id="login_password" name="login_username" class="form-control" type="password" placeholder="şifre" required>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <button id="login_submit_btn" type="submit" class="btn btn-success btn-md btn-block"><i class="fa fa-sign-in">&nbsp;</i>Giriş</button>
+                            </div>
+                            <div>
+                                <button id="login_lost_btn" type="button" class="btn btn-link">Şifremi Unuttum?</button>
+                                <button id="login_register_btn" type="button" class="btn btn-link">Kayıt</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End # Login Form -->
+                    <!-- Begin | Lost Password Form -->
+                    <form id="lost-form" style="display:none;" action="/Login/LostPassword" method="post">
+                        <div class="modal-body">
+                            <div id="div-lost-msg">
+                                <div id="icon-lost-msg" class="fa fa-chevron-right"></div>
+                                <span id="text-lost-msg">E-posta adresinizi yazınız.</span>
+                            </div>
+                            <input id="lost_email" name="lost_email" class="form-control" type="email" placeholder="e-posta adresiniz" required>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <button id="lost_submit_btn" type="submit" class="btn btn-success btn-md btn-block"><i class="fa fa-send">&nbsp;</i>Gönder</button>
+                            </div>
+                            <div>
+                                <button id="lost_login_btn" type="button" class="btn btn-link">Giriş</button>
+                                <button id="lost_register_btn" type="button" class="btn btn-link">Kayıt</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End | Lost Password Form -->
+                    <!-- Begin | Register Form -->
+                    <form id="register-form" style="display:none;" action="/Login/SignUp" method="post">
+                        <div class="modal-body">
+                            <div id="div-register-msg">
+                                <div id="icon-register-msg" class="fa fa-chevron-right"></div>
+                                <span id="text-register-msg">Kayıt</span>
+                            </div>
+                            <input id="register_name" name="register_name" class="form-control" type="text" placeholder="ad" required>
+                            <input id="register_surname" name="register_surname" class="form-control" type="text" placeholder="soyad" required>
+                            <input id="register_username" name="register_username" class="form-control" type="text" placeholder="kullanıcı adı" required>
+                            <input id="register_email" name="register_email" class="form-control" type="text" placeholder="e-mail" required>
+                            <input id="register_password" name="register_password" class="form-control" type="password" placeholder="şifre" required>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <button id="register_submit_btn" type="submit" class="btn btn-success btn-md btn-block"><i class="fa fa-plus">&nbsp;</i>Üye Ol</button>
+                            </div>
+                            <div>
+                                <button id="register_login_btn" type="button" class="btn btn-link">Giriş</button>
+                                <button id="register_lost_btn" type="button" class="btn btn-link">Şifremi Unuttum?</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End | Register Form -->
+
+                </div>
+                <!-- End # DIV Form -->
+
+            </div>
+        </div>
+    </div> <!-- END # MODAL LOGIN -->
+}
+
+<script src="~/Scripts/modal-login.js"></script>

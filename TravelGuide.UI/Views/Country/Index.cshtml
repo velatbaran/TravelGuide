@@ -1,0 +1,279 @@
+﻿@using GridMvc.Html;
+@using TravelGuide.Entities.Entity;
+@model List<Country>
+@{
+    ViewBag.Title = "Ülkeleri Yönet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h2>@ViewBag.Title</h2>
+                <hr />
+            </div>
+
+            <div class="col-md-10 col-md-offset-1" style="margin-bottom:20px">
+                <a href="#" class="btn btn-primary" title="Yeni Ülke Ekle" data-target="#newCountryModal" data-toggle="modal" data-title="newCountryModal"><i class="fa fa-plus mr-2"></i> Yeni Ülke Ekle</a>
+            </div>
+
+            <div class="col-md-10 col-md-offset-1">
+                @(Html.Grid(Model).Columns(col =>
+            {
+                col.Add(x => x.Id, true);
+                col.Add(x => x.Name).Titled("Ülke");
+                col.Add(x=>x.CreatedOn).Titled("Kayıt Tarihi").Format("{0:d}");
+                col.Add(x => x.CreatedUsername).Titled("Kaydeden");
+                col.Add(x => x.ModifiedOn).Titled("Güncelleme Tarihi").Format("{0:d}");
+                col.Add(x => x.ModifiedUsername).Titled("Güncelleyen");
+
+                col.Add().Encoded(false).Sanitized(false).RenderValueAs(k =>
+                {
+                    string htmlEditButton = "<a class='btn btn-warning', title='Güncelle', data-toggle = 'modal', data-target = '#editCountryModal', data-country-id = '" + k.Id + "'><i class='fa fa-edit mr-2'>&nbsp</i>Güncelle</a>";
+                    return MvcHtmlString.Create(htmlEditButton);
+                });
+                col.Add().Encoded(false).Sanitized(false).RenderValueAs(k =>
+                {
+                    string htmlEditButton = "<a class='btn btn-danger', title='Sil', data-toggle = 'modal', data-target = '#deleteCountryModal', data-country-id = '" + k.Id + "'><i class='fa fa-trash mr-2'>&nbsp</i>Sil</a>";
+                    return MvcHtmlString.Create(htmlEditButton);
+                });
+                col.Add().Encoded(false).Sanitized(false).RenderValueAs(k =>
+                {
+                    string htmlEditButton = "<a class='btn btn-default', title='Detay', data-toggle = 'modal', data-target = '#detailCountryModal', data-country-id = '" + k.Id + "'><i class='fa fa-search mr-2'>&nbsp</i>Detay</a>";
+                    return MvcHtmlString.Create(htmlEditButton);
+                });
+            })
+            .Filterable(true)
+            .WithMultipleFilters()
+            .Sortable(true)
+            .WithPaging(10)
+            .SetLanguage("tr")
+            .EmptyText("Kayıtlı bir daire tipi bulunmamaktadır.")
+           )
+            </div>
+        </div>
+    </div>
+</article>
+<script src="~/Scripts/admin.js"></script>
+<!-- Modal new County-->
+<div class="modal fade" id="newCountryModal" tabindex="-1" aria-labelledby="newCountryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="newCountryModalLabel">Ülke Kayıt Sayfası</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <strong for="name" class="control-label col-md-4">Ülke Adı *</strong>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="addName" placeholder="Ülke Adı" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Kapat"><i class="fa fa-close mr-2">&nbsp;</i>Kapat</button>
+                <button type="submit" id="btnAddCountry" class="btn btn-success" title="Kaydet"><i class="fa fa-save mr-2">&nbsp;</i>Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit County-->
+<div class="modal fade" id="editCountryModal" tabindex="-1" aria-labelledby="editCountryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="editCountryModalLabel">Ülke Güncelleme Sayfası</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="editId">
+                            <strong for="name" class="control-label col-md-4">Ülke Adı *</strong>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="editName" placeholder="Ülke Adı" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Kapat"><i class="fa fa-close mr-2">&nbsp;</i>Kapat</button>
+                <button type="submit" id="btnEditCountry" class="btn btn-warning" title="Güncelle"><i class="fa fa-edit mr-2">&nbsp;</i>Güncelle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal delete Country-->
+<div class="modal fade" id="deleteCountryModal" tabindex="-1" aria-labelledby="deleteCountryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="deleteCountryModalLabel">Silme Sayfası</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <form id="deleteCountryForm" action="/Country/Delete" method="post">
+                            <input type="hidden" id="deleteCountryId" name="Id" />
+                        </form>
+
+                        <div class="alert alert-danger">
+                            <span class="fa fa-remove"></span> Ülke kaydını silmek istediğinize emin misiniz?
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" title="İptal"><i class="fa fa-close mr-2"></i>İptal</button>
+                <button type="submit" id="btnDeleteCountry" class="btn btn-danger" title="Sil" onclick="btnDeleteCountry_Click()"><i class="fa fa-trash mr-2">&nbsp;</i>Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal detail Country-->
+<div class="modal fade" id="detailCountryModal" tabindex="-1" aria-labelledby="detailCountryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="detailCountryModalLabel">Detay Sayfası</h3>
+            </div>
+            <div class="modal-body" id="detail_body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Kapat"><i class="fa fa-close mr-2"></i>Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        $("#btnAddCountry").click(function () {
+            var Name = $("#addName").val();
+            if (Name == null) alert("Lütfen bu alanı doldurunuz.")
+
+            $.ajax({
+                method: "POST",
+                url: "/Country/Create",
+                data: { Name }
+            }).done(function (result) {
+                if (!result.hasError) {
+                    alert(result.Message)
+                    location.reload()
+                }
+                else {
+                    alert(result.Message)
+                }
+            }).fail(function () {
+                alert("Sunucu ile bağlantı kesildi.")
+            });
+        });
+
+        $('#editCountryModal').on('show.bs.modal', function (e) {
+
+            var btn = $(e.relatedTarget);
+            var id = btn.data("country-id");
+
+            $.ajax({
+                method: "GET",
+                url: "/Country/Edit/" + id,
+            }).done(function (data) {
+                if (data.hasError) {
+                    alert(data.Message);
+                } else {
+                    $("#editName").val(data.result.Name);
+                    $("#editId").val(data.result.Id);
+                }
+            }).fail(function () {
+                alert("Sunucu ile bağlantı kurulamadı.");
+            });
+        });
+
+        $("#btnEditCountry").click(function () {
+            var Name = $("#editName").val();
+            if (Name == null) alert("Lütfen bu alanı doldurunuz.")
+
+            var obj = {
+                Id: $("#editId").val(),
+                Name: $("#editName").val()
+            }
+
+            $.ajax({
+                method: "POST",
+                url: "/Country/Edit",
+                data: obj,
+                dataType: "json"
+            }).done(function (result) {
+                if (!result.hasError) {
+                    alert(result.Message)
+                    location.reload()
+                }
+                else {
+                    alert(result.Message)
+                }
+            }).fail(function () {
+                alert("Sunucu ile bağlantı kesildi.")
+            });
+        });
+
+        $('#deleteCountryModal').on('show.bs.modal', function (e) {
+
+            var btn = $(e.relatedTarget)
+            var id = btn.data("country-id");
+            $("#deleteCountryModal").find("#deleteCountryId").val(id);
+        });
+
+        $("#btnDeleteCountry").click(function () {
+            var id = $("#deleteCountryId").val();
+            $.ajax({
+                method: "POST",
+                url: "/Country/Delete",
+                data: { id }
+            }).done(function (result) {
+                if (!result.hasError) {
+                    alert(result.Message)
+                    location.reload()
+                }
+                else {
+                    alert(result.Message)
+                }
+            }).fail(function () {
+                alert("Sunucu ile bağlantı kesildi.")
+            });
+        });
+
+        $('#detailCountryModal').on('show.bs.modal', function (e) {
+
+            var btn = $(e.relatedTarget)
+            var id = btn.data("country-id");
+            $("#detail_body").load("/Country/Detail/" + id);
+        });
+    });
+    //function btnDeleteCountry_Click() {
+    //    $("#deleteCountryForm").submit()
+    //}
+</script>

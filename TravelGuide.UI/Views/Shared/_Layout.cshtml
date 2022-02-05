@@ -1,0 +1,144 @@
+﻿@using System.Web.Optimization;
+@using TravelGuide.UI.Models;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Seyahat Rehberi - @ViewBag.Title</title>
+    <!-- css files -->
+    @Styles.Render("~/css/all")
+    <!-- datatables css-->
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Custom Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!--js files-->
+    @Scripts.Render("~/js/all")
+
+    <!-- Datatables JS
+    ============================================ -->
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Menü</span>
+                    Menü <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="/Home/Index">Seyahat Rehberi</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form class="navbar-form navbar-left search" action="/Home/GetCityBySearchText" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="search_text" name="search_text" placeholder="Şehir Arama">
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        @MyBootstrapHelper.LinkMenu("/Home/Index", "home", "Anasayfa", "Anasayfa")
+                    </li>
+                    <li>
+                        @MyBootstrapHelper.LinkMenu("/About/Index", "book", "Hakkımızda", "Hakkımızda")
+                    </li>
+                    <li>
+                        @MyBootstrapHelper.LinkMenu("/Contact/Index", "phone", "İletişim", "İletişim")
+                    </li>
+
+                    @if (CurrentSession.User != null && CurrentSession.User.Role.Name == "admin")
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-wrench mr-2">&nbsp;</i>Yönetim
+                            </a>
+                            <div class="dropdown-menu" style="background-color:gray">
+                                @MyBootstrapHelper.LinkMenu("/Member/Index", "users", "Üyeler", "Üyeler")
+                                @MyBootstrapHelper.DropdownDivider()
+                                @MyBootstrapHelper.LinkMenu("/Country/Index", "th-list", "Ülkeler", "Ülkeler")
+                                @MyBootstrapHelper.DropdownDivider()
+                                @MyBootstrapHelper.DropdownLinkMenu("/City/Index", "th-list", "Şehirler", "Şehirler")
+                                @MyBootstrapHelper.DropdownDivider()
+                                @MyBootstrapHelper.DropdownLinkMenu("/RoadDescribeUnit/Index", "th-list", "Yol Tarif Birimleri", "Yol Tarif Birimleri")
+                                @MyBootstrapHelper.DropdownDivider()
+                                @MyBootstrapHelper.DropdownLinkMenu("/About/GetAbout", "book", "Hakkımızda", "Hakkımızda")
+                                @MyBootstrapHelper.DropdownDivider()
+                                @MyBootstrapHelper.DropdownLinkMenu("/Contact/GetContact", "phone", "İletişim", "İletişim")
+                            </div>
+                        </li>
+                    }
+                    @if (CurrentSession.User != null)
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user-md mr-2">&nbsp;</i>@CurrentSession.User.Username
+                            </a>
+                            <div class="dropdown-menu" style="background-color:gray">
+                                @MyBootstrapHelper.LinkMenu("/Home/ShowProfile", "user-md", "Profil Göster", "Profil Göster")
+                                @MyBootstrapHelper.DropdownDivider()
+                                @MyBootstrapHelper.LinkMenu("/Home/ChangePassword", "key", "Şifre Değiştir", "Şifre Değiştir")
+                            </div>
+                        </li>
+                        <li>
+                            @MyBootstrapHelper.LinkMenu("/Login/SignOut", "sign-out", "Çıkış", "Çıkış")
+                        </li>
+                    }
+                    @if (CurrentSession.User == null)
+                    {
+                        <li>
+                            @*@MyBootstrapHelper.LinkMenu("/Home/SignIn", "sign-in", "Giriş")*@
+                            <a href="#" role="button" data-toggle="modal" data-target="#login-modal" data-openmode="login" title="Giriş">
+                                <i class="fa fa-sign-in">&nbsp;</i>Giriş
+                            </a>
+                        </li>
+                        <li>
+                            @*@MyBootstrapHelper.LinkMenu("/Home/Register", "user", "Kayıt")*@
+                            <a href="#" role="button" data-toggle="modal" data-target="#login-modal" data-openmode="register" title="Kayıt">
+                                <i class="fa fa-user">&nbsp;</i>Kayıt
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- Page Header -->
+    @RenderBody()
+    <hr>
+    <!-- Footer -->
+    @RenderSection("footer", required: false)
+
+    @Html.Partial("_PartialModalLogin")
+
+
+    <script>
+        $("#search_text").keyup(function (event) {
+            if (event.keyCode == 13) {
+                $(this).parent("form").submit();
+            }
+        });
+    </script>
+</body>
+</html>

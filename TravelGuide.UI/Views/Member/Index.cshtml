@@ -1,0 +1,218 @@
+﻿@using TravelGuide.Entities.Entity
+@model IEnumerable<Member>
+@{
+    ViewBag.Title = "Üyeleri Yönet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+<article>
+    <div class="container">
+        <div class="row">
+            <br />
+            <div class="col-md-12">
+                <h2>@ViewBag.Title</h2>
+                <hr />
+            </div>
+            <div class="col-md-12">
+                <p>
+                    @MyBootstrapHelper.LinkButton("/Member/Create", "primary", null, "Yeni Üye Ekle", "plus", "Yeni Üye Ekle")
+                </p>
+                <table class="table table-bordered table-striped table-hover table-responsive text-center" id="memberTable">
+                    <thead>
+                        <tr class="text-center">
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Surname)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Username)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Role.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedOn)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedUsername)
+                            </th>
+                            <th>
+                                İşlemler
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr data-member-id="@item.Id">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Surname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Username)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Role.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedOn.ToString().Split(' ')[0])
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedUsername)
+                                </td>
+                                <td>
+                                    @MyBootstrapHelper.LinkButton("/Member/Edit/" + item.Id + "", "warning", null, "Üye Güncelle", "edit", string.Empty)
+                                    <a href="#" class="btn btn-danger" title="Üye Sil" data-target="#memberDeleteModal" data-toggle="modal" data-member-id="@item.Id"><i class="fa fa-trash">&nbsp;</i></a>
+                                    @MyBootstrapHelper.LinkButton("/Member/Detail/" + item.Id + "", "secondary", null, "Üye Detay", "search", string.Empty)
+                                    @MyBootstrapHelper.LinkButton("/Member/ChangeRole/" + item.Id + "", "info", null, "Rol Değiştir", "cogs", string.Empty)
+                                    <button type="button" class="btn btn-default" title="Kilitle" data-locked="false" data-member-id="@item.Id">
+                                        <i id="iLock" class="fa fa-unlock"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</article>
+
+<script src="~/Scripts/admin.js"></script>
+<!-- Modal delete member-->
+<div class="modal fade" id="memberDeleteModal" tabindex="-1" aria-labelledby="memberDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="memberDeleteLabel">Silme Sayfası</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <form id="deleteMemberForm" action="/Member/Delete" method="post">
+                            <input type="hidden" id="deleteMemberId" name="Id" />
+                        </form>
+
+                        <div class="alert alert-danger">
+                            <span class="fa fa-remove"></span> Üye kaydını silmek istediğinize emin misiniz?
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" title="İptal"><i class="fa fa-close mr-2"></i>İptal</button>
+                <button type="submit" id="btnDeleteMember" class="btn btn-danger" title="Sil" onclick="btnDeleteMember_Click()"><i class="fa fa-trash mr-2">&nbsp;</i>Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/deleteMember.js"></script>
+<script src="~/Scripts/custom-datatable.js"></script>
+<script>
+    $(function () {
+
+        var membersId = [];
+        $("tr[data-member-id]").each(function (i, e) {
+            membersId.push($(e).data("member-id"));
+        });
+
+        $.ajax({
+
+            method: "Post",
+            url: "/Member/GetLocked",
+            data: { ids: membersId }
+
+        }).done(function (data) {
+
+            if (data.result != null && data.result.length > 0) {
+                for (var i = 0; i < data.result.length; i++) {
+                    var id = data.result[i];
+                    var lockedMember = $("tr[data-member-id=" + id + "]");
+                    var btn = lockedMember.find("button[data-locked]");
+                    var iLock = btn.find("i#iLock");
+
+                    btn.data("locked", true);
+                    btn.attr("title", "Kiliti Aç")
+                    iLock.removeClass("fa-unlock");
+                    iLock.addClass("fa-lock");
+                }
+            }
+
+        }).fail(function () {
+            alert("Sunucuya bağlanırken hata oluştu.")
+        });
+
+        $("button[data-locked]").click(function (e) {
+
+            var _btn = $(this);
+            var _locked = _btn.data("locked");
+            var _memberId = _btn.data("member-id");
+            var _iLock = _btn.find("i#iLock");
+
+            console.log(_locked);
+            console.log(_memberId);
+            console.log(_iLock);
+
+            $.ajax({
+
+                method: "Post",
+                url: "/Member/SetLocked",
+                data: { "id": _memberId, "locked": !_locked }
+
+            }).done(function (data) {
+
+                if (data.hasError) {
+                    alert(data.Message);
+                } else {
+                    _locked = !_locked;
+                    _btn.data("locked", _locked);
+                    _iLock.removeClass("fa-lock");
+                    _iLock.removeClass("fa-unlock");
+
+                    if (_locked) {
+                        _iLock.addClass("fa-lock");
+                        _btn.attr("title", "Kiliti Aç")
+                        alert("Üye başarılı bir şekilde kilitlendi.");
+                    } else {
+                        _iLock.addClass("fa-unlock");
+                        _btn.attr("title", "Kilitle")
+                        alert("Üyenin başarılı bir şekilde kilidi açıldı.");
+                    }
+                }
+
+            }).fail(function () {
+                alert("Sunucuya bağlanırken hata oluştu.");
+            });
+
+        });
+    });
+</script>
+
+
+

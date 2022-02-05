@@ -1,0 +1,60 @@
+﻿@model TravelGuide.Entities.Entity.Member
+@{
+    ViewBag.Title = "Profiliniz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/admin.css" rel="stylesheet" />
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <h2 style="color:#803b3b">@ViewBag.Title</h2>
+        <hr />
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <img src="~/images/members/@Model.ProfileImage" class="img-circle img-responsive" width="200" height="200" />
+        </div>
+        <div class="col-md-8">
+            <h3 style="color:#803b3b">@(Model.Name + " " + Model.Surname)</h3>
+            <br />
+            <h4 style="color:#803b3b"><b>@Html.DisplayNameFor(model => model.Username) : </b>@Model.Username</h4>
+            <h4 style="color:#803b3b"><b>@Html.DisplayNameFor(model => model.Email) : </b>@Model.Email</h4>
+            <h4 style="color:#803b3b"><b>@Html.DisplayNameFor(model => model.RoleId) : </b>@Model.Role.Name</h4>
+            <br />
+        </div>
+        @* Eğer  dropdown-toggle açılır menü açılmazsa bootstarp ve jquery .js ve .css dosyalarına bakmak gerekir*@
+        <div class="col-md-2 text-right">
+            <div class="btn-group">
+                <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+                    <span class="glyphicon glyphicon-cog">&nbsp;</span>
+                    Seçenekler
+                    <span class="icon-cog icon-white"></span><span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="@Url.Action("EditProfile")" title="Düzenle">
+                            <i class="fa fa-edit">&nbsp;</i>Düzenle
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("DeleteProfile")" title="Sil" onclick="return confirm('Hesabınızı silmek istediğinize emin misiniz?')">
+                            <i class="fa fa-remove">&nbsp;</i>Sil
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/admin.js"></script>

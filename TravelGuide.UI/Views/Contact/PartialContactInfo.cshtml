@@ -1,0 +1,10 @@
+﻿@using TravelGuide.Entities.Entity
+@model List<Contact>
+@foreach (Contact item in Model)
+{
+    <div class="col-md-4">
+        <h3><i class="fa fa-location-arrow">&nbsp;</i>Adres</h3><strong style="font-style:italic">@item.Address</strong><br />
+        <h3><i class="fa fa-envelope">&nbsp;</i>Email</h3><strong style="font-style:italic">@item.Email</strong><br />
+        <h3><i class="fa fa-phone">&nbsp;</i>Telefon</h3><strong style="font-style:italic">@item.Phone</strong><br /><br /><br />
+    </div>
+}

@@ -1,0 +1,42 @@
+﻿@helper DropdownLinkMenu(string url = " ", string icon = " ", string text = " ", string title = " ")
+{
+    <a href="@url" class="dropdown-item" title="@title"><i class="fa fa-@icon"></i>&nbsp;@text</a>
+}
+
+@helper DropdownDivider()
+{
+    <div role="separator" class="divider"></div>
+}
+
+@helper LinkMenu(string url = " ", string icon = " ", string text = " ",string title=" ")
+{
+    <a href="@url" title="@title"><i class="fa fa-@icon"></i>&nbsp;@text</a>
+}
+
+@helper LinkButton(string id = "", string url = "", string color = "", string addtionalClass = "", string title = "", string icon = "", string text = "")
+{
+    <a href="@url" id="@id" name="@id" class="btn btn-@color @addtionalClass" title="@title">
+        <i class="fa fa-@icon"></i>&nbsp;@text
+    </a>
+}
+
+@helper LinkButton(string url = "", string color = "", string addtionalClass = "", string title = "", string icon = "", string text = "")
+{
+    <a href="@url" class="btn btn-@color @addtionalClass" title="@title">
+        <i class="fa fa-@icon"></i>&nbsp;@text
+    </a>
+}
+
+@helper Button(string id = "", string color = "", string title = "", string addtionalClass = "", string typ = "button", string icon = "", string text = "")
+{
+    <button type="@typ" id="@id" name="@id" class="btn btn-@color @addtionalClass" title="@title">
+        <i class="fa fa-@icon"></i>&nbsp;@text
+    </button>
+}
+
+@helper Button(string color = "", string title = "", string addtionalClass = "", string typ = "button", string icon = "", string text = "")
+{
+    <button type="@typ" class="btn btn-@color @addtionalClass" title="@title">
+        <i class="fa fa-@icon"></i>&nbsp;@text
+    </button>
+}

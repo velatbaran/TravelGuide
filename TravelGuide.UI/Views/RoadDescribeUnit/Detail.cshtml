@@ -1,0 +1,84 @@
+﻿@model TravelGuide.Entities.Entity.RoadDescribeUnit
+@{
+    ViewBag.Title = "Yol Tarif Birimi Detay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>@ViewBag.Title</h2>
+            <hr />
+        </div>
+
+        <div class="form-horizontal">
+
+            <div class="col-md-10 col-md-offset-1">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PlaceId, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Place.Name, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        <textarea class="form-control" disabled cols="5" rows="10">@Model.Detail</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CreatedOn, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CreatedOn, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CreatedUsername, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CreatedUsername, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ModifiedOn, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ModifiedOn, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ModifiedUsername, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ModifiedUsername, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @MyBootstrapHelper.LinkButton("/RoadDescribeUnit/Index/" + ViewBag.CityId + "", "danger", null, "Geri Dön", "angle-double-left", "Geri Dön")
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/admin.js"></script>
+

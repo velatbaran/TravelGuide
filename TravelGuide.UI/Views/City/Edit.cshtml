@@ -1,0 +1,112 @@
+﻿@model TravelGuide.Entities.Entity.City
+@{
+    ViewBag.Title = "Şehir Güncelleme Sayfası";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src="~/CKFinderScripts/ckfinder.js"></script>
+
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>@ViewBag.Title</h2>
+            <hr />
+        </div>
+
+        @using (Html.BeginForm("Edit", "City", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <div class="col-md-12">
+                    @Html.ValidationSummary(false)
+                    @Html.HiddenFor(model => model.Id)
+                </div>
+
+                <div class="col-md-3">
+                    <img src="~/images/medias/@Model.Image" alt="@Model.Name" width="250" height="250" /><br />
+                    @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control", type = "file" } }) <br />
+                    <span class="glyphico glyphicon-info-sign">&nbsp;</span>
+                    <span><i>Lütfen .png,.jpeg ya da .jpg formatı kullanın</i></span> <hr />
+                </div>
+
+                <div class="col-md-9">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CountryId, "Ülke", htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.CountryId, (SelectList)ViewBag.ListCountry, "ülke seçiniz...", new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, "Şehir", htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Slogan, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Slogan, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DateInformation, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.DateInformation, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.WanderPlaces, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.WanderPlaces, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Foods, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.Foods, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OtherInformations, htmlAttributes: new { @class = "control-label font-weight-bold col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.OtherInformations, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @MyBootstrapHelper.Button("warning","Güncelle",string.Empty,"submit","edit","Güncelle")
+                            @MyBootstrapHelper.LinkButton("/City/Index","danger",string.Empty,"Geri Dön", "angle-double-left", "Geri Dön")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>
+<script src="~/Scripts/admin.js"></script>
+<script src="~/Scripts/ckeditor/config.js"></script>
+<script src="~/CKFinderScripts/config.js"></script>
+<script src="~/Scripts/custom_ckeditor.js"></script>

@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Erişim Reddedildi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="row mdi-alert-octagon" style="margin-top:15px">
+            <div class="col-md-10 col-md-offset-1 text-left" style="padding-top:20px">
+                <h1>
+                    <span class="glyphicon glyphicon-info-sign" style="color:red"></span>   Yetkisiz Erişim
+                </h1>
+                <br />
+                <p>
+                    Lütfen sisteme önce giriş yapınız.
+                    <br /><br />
+                          <a href="/Home/Index" class="btn btn-default" title="Anasayfaya Git!"> Anasayfaya Git!</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/admin.js"></script>
+

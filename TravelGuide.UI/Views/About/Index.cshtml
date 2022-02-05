@@ -1,0 +1,43 @@
+﻿@using TravelGuide.Entities.Entity
+@model List<About>
+@{
+    ViewBag.Title = "Hakkımızda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (About item in Model)
+{
+    <header class="intro-header" style="background-image: url('../../images/about-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Biz Kimiz?</h1>
+                        <hr class="small">
+                        <span class="subheading">
+                            <p class="text-justify">
+                                @item.Title
+                            </p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <img src="~/images/@item.AboutImage" alt="" width="600" height="500"/>
+            </div>
+            <div class="col-md-7">
+                <p class="text-justify">@item.Description</p>
+            </div>
+        </div>
+    </div>
+
+}
+@section footer{
+    @Html.Partial("_PartialFooter")
+}
+

@@ -1,0 +1,106 @@
+﻿@model TravelGuide.Entities.Entity.Member
+@{
+    ViewBag.Title = "Üye Detay Sayfası";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<header class="intro-header" style="margin-top:70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <p class="display-4 border-bottom"></p>
+            <h3>@ViewBag.Title</h3>
+            <hr />
+        </div>
+    </div>
+
+    <div>
+        <dl class="row">
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.ProfileImage)
+            </dt>
+            <dd class="col-md-10">
+                <img src="~/images/@Model.ProfileImage" alt="" width="250" height="250" class="img-responsive img-rounded" /><br />
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.Surname)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.Surname)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.Username)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.Username)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.Password)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.Role.Name)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.Role.Name)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.CreatedOn)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.CreatedUsername)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.CreatedUsername)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.ModifiedOn)
+            </dd>
+            <dt class="col-md-2">
+                @Html.DisplayNameFor(model => model.ModifiedUsername)
+            </dt>
+            <dd class="col-md-10">
+                @Html.DisplayFor(model => model.ModifiedUsername)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="col-md-12 text-right">
+        @MyBootstrapHelper.LinkButton("/Member/Edit/" + Model.Id + "", "warning", null, "Üye Güncelle", "edit", "Güncelle")
+        @MyBootstrapHelper.LinkButton("/Member/Index/", "default", null, "Geri Dön", "angle-double-left", "Geri Dön")
+    </div>
+</div>
+
+
+<script src="~/Scripts/admin.js"></script>
